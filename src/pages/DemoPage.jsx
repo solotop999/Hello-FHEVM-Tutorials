@@ -27,18 +27,32 @@ export default function DemoPage() {
   const [clearCount, setClearCount] = useState(null);
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState("");
-
+  const [sdkReady, setSdkReady] = useState(false);
+  
   // Init SDK
   useEffect(() => {
     (async () => {
       if (!isConnected || !window.ethereum) return;
 
-      await initSDK();
-      const inst = await createInstance({
-        ...SepoliaConfig,
-        network: window.ethereum,
-      });
-      setInstance(inst);
+      // mark not ready while starting init
+      setSdkReady(false);
+      setLoading("sdk");
+      setMsg("⏳ Waiting for SDK to initialize...");
+      try {
+        await initSDK();
+        const inst = await createInstance({
+          ...SepoliaConfig,
+          network: window.ethereum,
+        });
+        setInstance(inst);
+        setSdkReady(true);
+        setMsg("✅ SDK initialized");
+      } catch (e) {
+        console.error("initSDK/createInstance failed", e);
+        setMsg("❌ SDK init failed: " + (e.message || e));
+      } finally {
+        setLoading("");
+      }
     })();
   }, [isConnected]);
 
@@ -233,9 +247,13 @@ export default function DemoPage() {
       <div className="grid grid-cols-2 gap-3 mb-6">
         <button
           onClick={() => handleTx("increment")}
-          disabled={loading === "increment"}
+          disabled={loading === "increment" || !sdkReady}
           className={`px-4 py-2 rounded bg-black text-white hover:bg-gray-800 transition-colors duration-200 ${
-            loading === "increment" ? "opacity-50 cursor-not-allowed" : ""
+            loading === "increment"
+              ? "opacity-50 cursor-not-allowed"
+              : !sdkReady
+              ? "hover:cursor-not-allowed"
+              : ""
           }`}
         >
           {loading === "increment" ? "Encrypting data.." : "Increment Counter by 1"}
@@ -243,9 +261,13 @@ export default function DemoPage() {
 
         <button
           onClick={() => handleTx("decrement")}
-          disabled={loading === "decrement"}
+          disabled={loading === "decrement" || !sdkReady}
           className={`px-4 py-2 rounded bg-black text-white hover:bg-gray-800 transition-colors duration-200 ${
-            loading === "decrement" ? "opacity-50 cursor-not-allowed" : ""
+            loading === "decrement"
+              ? "opacity-50 cursor-not-allowed"
+              : !sdkReady
+              ? "hover:cursor-not-allowed"
+              : ""
           }`}
         >
           {loading === "decrement" ? "Encrypting data.." : "Decrement Counter by 1"}
@@ -256,9 +278,13 @@ export default function DemoPage() {
       <div className="mb-6">
         <button
           onClick={handleDecrypt}
-          disabled={loading === "decrypt"}
+          disabled={loading === "decrypt" || !sdkReady}
           className={`w-full px-4 py-3 rounded-lg bg-black text-white font-semibold hover:bg-gray-800 transition-colors duration-200 ${
-            loading === "decrypt" ? "opacity-50 cursor-not-allowed" : ""
+            loading === "decrypt"
+              ? "opacity-50 cursor-not-allowed"
+              : !sdkReady
+              ? "hover:cursor-not-allowed"
+              : ""
           }`}
         >
           {loading === "decrypt" ? "Encrypting data.." : "🔑 Decrypt"}
