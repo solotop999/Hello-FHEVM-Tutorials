@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAccount } from "wagmi";
 import { ethers } from "ethers";
 
-// SDK từ CDN
+// SDK from CDN
 import {
   initSDK,
   createInstance,
@@ -14,7 +14,7 @@ import { CONTRACT_ADDRESS } from "../config";
 
 const ABI = FHECounterArtifact.abi;
 
-// Helper rút gọn hash
+// Helper to shorten hashes
 function shortenHash(hash, start = 8, end = 8) {
   if (!hash) return "";
   return `${hash.slice(0, start)}...${hash.slice(-end)}`;
@@ -28,13 +28,12 @@ export default function DemoPage() {
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState("");
   const [sdkReady, setSdkReady] = useState(false);
-  
+
   // Init SDK
   useEffect(() => {
     (async () => {
       if (!isConnected || !window.ethereum) return;
 
-      // mark not ready while starting init
       setSdkReady(false);
       setLoading("sdk");
       setMsg("⏳ Waiting for SDK to initialize...");
@@ -79,7 +78,7 @@ export default function DemoPage() {
     }
   };
 
-  // Auto fetch count handle khi instance sẵn sàng
+  // Auto fetch count handle when instance is ready
   useEffect(() => {
     if (instance) {
       handleRefreshCount();
@@ -91,7 +90,6 @@ export default function DemoPage() {
       setLoading("decrypt");
       setMsg("⏳ Fetching handle & decrypting...");
 
-      // Luôn fetch lại handle mới nhất trước khi decrypt
       const provider = new ethers.BrowserProvider(window.ethereum);
       const contract = await getContract(provider);
       const encryptedHandle = await contract.getCount();
@@ -99,10 +97,10 @@ export default function DemoPage() {
 
       const signer = await provider.getSigner();
 
-      // 1. Tạo keypair
+      // 1. Generate keypair
       const keypair = instance.generateKeypair();
 
-      // 2. Chuẩn bị input cho userDecrypt
+      // 2. Prepare input for userDecrypt
       const handleContractPairs = [
         {
           handle: encryptedHandle,
@@ -110,10 +108,10 @@ export default function DemoPage() {
         },
       ];
       const startTimeStamp = Math.floor(Date.now() / 1000).toString();
-      const durationDays = "10"; // để 10 ngày
+      const durationDays = "10";
       const contractAddresses = [CONTRACT_ADDRESS];
 
-      // 3. Tạo EIP712 message
+      // 3. Create EIP712 message
       const eip712 = instance.createEIP712(
         keypair.publicKey,
         contractAddresses,
@@ -121,7 +119,7 @@ export default function DemoPage() {
         durationDays
       );
 
-      // 4. User ký EIP-712
+      // 4. User signs EIP-712 message
       const signature = await signer.signTypedData(
         eip712.domain,
         {
@@ -133,19 +131,19 @@ export default function DemoPage() {
 
       setMsg("🔑 Decryption signature obtained, calling userDecrypt...");
 
-      // 5. Gọi userDecrypt
+      // 5. Call userDecrypt
       const result = await instance.userDecrypt(
         handleContractPairs,
         keypair.privateKey,
         keypair.publicKey,
-        signature.replace("0x", ""), // bỏ tiền tố 0x
+        signature.replace("0x", ""),
         contractAddresses,
         signer.address,
         startTimeStamp,
         durationDays
       );
 
-      // 6. Lấy kết quả
+      // 6. Extract result
       const decryptedValue = result[encryptedHandle];
       setClearCount(decryptedValue.toString());
       setMsg(`✅ Decrypted successfully: ${decryptedValue.toString()}`);
@@ -161,7 +159,7 @@ export default function DemoPage() {
     }
   };
 
-  // Hàm chung cho increment/decrement
+  // Common function for increment/decrement
   const handleTx = async (action) => {
     try {
       setLoading(action);
@@ -191,19 +189,15 @@ export default function DemoPage() {
               ciphertexts.inputProof
             );
 
-      // Waiting for confirmation (hiện full hash)
       setMsg(`⏳ Waiting for confirmation.. Hash: ${tx.hash}`);
 
-      // Confirmed → hiển thị link rút gọn
       await tx.wait();
-
-      await handleRefreshCount()
+      await handleRefreshCount();
 
       setMsg(
         `✅ Updated countHandle: ${countHandle} <br/>` +
-        `✅ Transaction success: <a href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank" rel="noopener noreferrer" class="text-blue-600 underline hover:text-blue-800">https://sepolia.etherscan.io/tx/${shortenHash(tx.hash)}</a>`
+          `✅ Transaction success: <a href="https://sepolia.etherscan.io/tx/${tx.hash}" target="_blank" rel="noopener noreferrer" class="text-blue-600 underline hover:text-blue-800">https://sepolia.etherscan.io/tx/${shortenHash(tx.hash)}</a>`
       );
-
     } catch (e) {
       console.error(e);
       if (e.code === "ACTION_REJECTED") {
@@ -231,6 +225,30 @@ export default function DemoPage() {
   return (
     <div className="py-10 px-6 text-black max-w-2xl mx-auto bg-[#ffd200]">
       <h1 className="text-2xl font-bold mb-6">🔒 Hello FHEVM Counter</h1>
+
+      {/* Instructions */}
+      <div className="mb-6 bg-white border-2 border-black rounded-lg shadow-md p-4 text-sm leading-relaxed">
+        <h2 className="font-semibold text-lg mb-2">ℹ️ How to use this demo</h2>
+        <ol className="list-decimal list-inside space-y-2">
+          <li>
+            <strong>Increment / Decrement</strong>: Click 
+            <em>"Increment Counter by 1"</em> or <em>"Decrement Counter by 1"</em>. 
+            Your input is 🔒 encrypted, sent on-chain (⚙️ compute), and the encrypted counter 
+            is updated on Sepolia — the real value stays private.
+          </li>
+          <li>
+            <strong>Decrypt</strong>: With a new <code>countHandle</code>, click 
+            <em>"🔑 Decrypt"</em>. Sign an EIP-712 message in your wallet, and the SDK returns the clear value.
+          </li>
+<li>
+  <strong>Flow</strong>: 
+  <span className="px-2 py-1 rounded-md bg-yellow-200 font-mono text-black">
+    Encrypt → Compute → Decrypt
+  </span>
+  shows how FHEVM processes encrypted data while keeping it private.
+</li>
+        </ol>
+      </div>
 
       {/* Count Handle */}
       <div className="bg-white text-black rounded-lg p-4 mb-6 border-2 border-black shadow-md">
@@ -291,18 +309,18 @@ export default function DemoPage() {
         </button>
       </div>
 
-      {/* Decrypted result */}
-    <div className="bg-white text-black rounded-lg p-6 border-2 border-black shadow-md">
-      <p className="font-semibold mb-2">Logs: </p>
-      {msg ? (
-        <div
-          className="text-sm text-gray-800 whitespace-pre-wrap break-all"
-          dangerouslySetInnerHTML={{ __html: msg }}
-        />
-      ) : (
-        <p className="text-sm text-gray-500">...</p>
-      )}
-</div>
+      {/* Logs */}
+      <div className="bg-white text-black rounded-lg p-6 border-2 border-black shadow-md">
+        <p className="font-semibold mb-2">Logs: </p>
+        {msg ? (
+          <div
+            className="text-sm text-gray-800 whitespace-pre-wrap break-all"
+            dangerouslySetInnerHTML={{ __html: msg }}
+          />
+        ) : (
+          <p className="text-sm text-gray-500">...</p>
+        )}
+      </div>
     </div>
   );
 }
