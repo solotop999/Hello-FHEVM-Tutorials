@@ -1,10 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
-
 import HomePage from "./pages/HomePage";
 import CoursePage from "./pages/CoursePage";
 import DemoPage from "./pages/DemoPage";
 import SectionPage from "./pages/SectionPage";
+import { Analytics } from "@vercel/analytics/react"
 
 function App() {
   return (
@@ -18,6 +18,8 @@ function App() {
           <Route path="/demo" element={<DemoPage />} />
         </Routes>
       </main>
+
+      <Analytics />
     </div>
   );
 }
