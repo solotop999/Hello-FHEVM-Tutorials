@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import CourseHeader from "../components/CourseHeader";
 import SectionItem from "../components/SectionItem";
+
 import sections from "../data/sections";
 
 export default function CoursePage() {
@@ -29,7 +30,12 @@ export default function CoursePage() {
 
         <div className="space-y-4">
           {sections.map((s, i) => (
-            <SectionItem key={i} {...s} />
+            <SectionItem
+              key={i}
+              {...s}
+              courseId={id}
+              sectionIndex={i}
+            />
           ))}
         </div>
       </div>

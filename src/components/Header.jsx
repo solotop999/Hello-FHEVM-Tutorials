@@ -17,13 +17,13 @@ export default function Header() {
         <div className="flex items-center gap-4">
 
           {/* Social icons */}
-          <a href="https://github.com/yourprofile" target="_blank" rel="noreferrer">
+          <a href="https://github.com/solotop999/Hello-FHEVM-Tutorials" target="_blank" rel="noreferrer">
             <Github size={26} color="#ffd200"/>
           </a>
-          <a href="https://twitter.com/yourprofile" target="_blank" rel="noreferrer">
+          <a href="https://x.com/solotop999" target="_blank" rel="noreferrer">
             <Twitter size={26} color="#ffd200"/>
           </a>
-          <a href="https://discord.gg/yourcommunity" target="_blank" rel="noreferrer">
+          <a href="https://t.me/solotop999" target="_blank" rel="noreferrer">
             <MessageCircle size={26} color="#ffd200"/>
           </a>
 

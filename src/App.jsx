@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import HomePage from "./pages/HomePage";
 import CoursePage from "./pages/CoursePage";
 import DemoPage from "./pages/DemoPage";
+import SectionPage from "./pages/SectionPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/courses/:id" element={<CoursePage />} />
+          <Route path="/courses/:id/section/:sectionIndex" element={<SectionPage />} />
           <Route path="/demo" element={<DemoPage />} />
         </Routes>
       </main>

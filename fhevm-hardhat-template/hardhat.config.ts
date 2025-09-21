@@ -13,7 +13,6 @@ import "./tasks/accounts";
 import "./tasks/FHECounter";
 import * as dotenv from "dotenv";
 dotenv.config();
-
 // Run 'npx hardhat vars setup' to see the list of variables that need to be set
 
 const MNEMONIC: string =

@@ -8,11 +8,11 @@ export default {
       },
       colors: {
         dark: {
-          DEFAULT: "#0c0f2c",   // nền chính
-          card: "#12163d",      // khung card
+          DEFAULT: "#0c0f2c",  
+          card: "#12163d",      
         },
         accent: {
-          blue: "#3b82f6",      // xanh highlight
+          blue: "#3b82f6",      
           purple: "#8b5cf6",
         },
       },
@@ -26,5 +26,7 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),  
+  ],
 }
