@@ -1,7 +1,6 @@
 # ⚡ FHEVM Course UI – Hello FHEVM Tutorial
 
 A full **end-to-end tutorial and interactive UI** that introduces Web3 developers to the world of **Fully Homomorphic Encryption on the Ethereum Virtual Machine (FHEVM)**.  
-Built with **React, Vite, Tailwind, and Hardhat**.
 
 ---
 
@@ -40,6 +39,28 @@ By the end of this tutorial, you will:
 - **Wallet**: rainbowkit / Metamask / Sepolia Testnet  
 - **Tech**: [Zama Confidential Blockchain Protocol](https://docs.zama.ai/protocol)  
 
+---
+
+## 🔄 Data Flow in FHEVM
+
+```
+User (👤)  
+   |  
+   |  (1) Encrypted Input  
+   v  
++-------------------------+  
+|   🔒 Smart Contract     |  
+|   (FHEVM Execution)     |  
++-------------------------+  
+   |  
+   |  (2) Encrypted Result  
+   v  
+User (👤)  
+   |  
+   |  (3) Decrypt locally  
+   v  
+Plaintext Output (Visible only to User)  
+```
 ---
 
 ## ⚡ Quick Start
@@ -88,45 +109,18 @@ cd ..
 ```bash
 npm run dev
 ```
+Now, open <http://localhost:5173/> in your browser. 🚀
+
+- You will find **complete documentation and guidance** on FHEVM Solidity
+right within the app.
+- This tutorial equips you with everything needed to build a dApp
+**end-to-end**
+- from writing and deploying the smart contract to creating a polished frontend.
+
+✨ As a bonus, the project includes a **live demo page** where you can
+interact directly with your FHEVM-powered dApp.
 
 ---
-
-## 🔄 Data Flow in FHEVM
-
-```
-User (👤)  
-   |  
-   |  (1) Encrypted Input  
-   v  
-+-------------------------+  
-|   🔒 Smart Contract     |  
-|   (FHEVM Execution)     |  
-+-------------------------+  
-   |  
-   |  (2) Encrypted Result  
-   v  
-User (👤)  
-   |  
-   |  (3) Decrypt locally  
-   v  
-Plaintext Output (Visible only to User)  
-```
----
-
-## 🎮 Tutorial dApp Example
-
-Our **Hello FHEVM dApp** demonstrates:
-
-- 🔐 Encrypting a simple number from the UI.  
-- ⛓ Sending it to the blockchain for private computation.  
-- 🔑 Receiving and decrypting the result directly in the browser.  
-- 🧮 Interacting with the **FHECounter contract**, where:  
-  - Users can send encrypted increments/decrements.  
-  - The counter value is updated **privately on-chain** (never revealed in plaintext).  
-  - Only the user can decrypt the final counter value locally.  
-
-This shows how a simple counter — one of the most common smart contract examples — can be reimagined with FHE to preserve **user privacy and data confidentiality**.
-
 
 ## 🏆 Why This Tutorial?
 
