@@ -64,7 +64,7 @@ Plaintext Output (Visible only to User)
 ---
 
 ## ⚡ Quick Start
-
+- Install [Nodejs](https://nodejs.org/en/download)
 ### 1. Clone & Install
 ```bash
 git clone https://github.com/your-repo/fhevm-course-ui
