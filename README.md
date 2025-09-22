@@ -79,7 +79,7 @@ cd fhevm-hardhat-template
 npm install
 ```
 
-- Open `hardhat.config.ts` and fill your: `MNEMONIC`, `INFURA_API_KEY` ([Infura](https://developer.metamask.io/)), `ETHERSCAN_API_KEY` ([Etherscan](https://etherscan.io/apidashboard)).
+- Rename `env_example` to `.env` and fill your: `MNEMONIC`, `INFURA_API_KEY` ([Infura](https://developer.metamask.io/)), `ETHERSCAN_API_KEY` ([Etherscan](https://etherscan.io/apidashboard)).
 
 ```bash
 npx hardhat compile --network sepolia
