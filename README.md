@@ -67,8 +67,8 @@ Plaintext Output (Visible only to User)
 - Install [Nodejs](https://nodejs.org/en/download)
 ### 1. Clone & Install
 ```bash
-git clone https://github.com/your-repo/fhevm-course-ui
-cd fhevm-course-ui
+git clone https://github.com/solotop999/Hello-FHEVM-Tutorials.git
+cd Hello-FHEVM-Tutorials
 npm install
 ```
 
